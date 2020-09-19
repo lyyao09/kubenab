@@ -18,8 +18,6 @@ build: export CGO_ENABLED=0
 build: export GO111MODULE=on
 build: export GOPROXY=https://gocenter.io
 build:
-	@echo "++ Pulling Git Tags ++"
-	git fetch --tags
 	@echo "++ Building kubenab go binary..."
 	mkdir -p bin
 	cd cmd/kubenab && go build $(STRIP_DEBUG) -a --installsuffix cgo --ldflags="-s -X main.AppVersion=$(APP_VERSION) -X main.BuildDate=$(BUILD_DATE) -X main.GitHash=$(GIT_HASH)" -o $(OUT_DIR)/kubenab
