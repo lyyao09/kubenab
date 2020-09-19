@@ -69,7 +69,7 @@ func mutateAdmissionReviewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Debugln(data)
+	//log.Debugln(data)
 
 	ar := v1beta1.AdmissionReview{}
 	if err := json.Unmarshal(data, &ar); err != nil {
@@ -223,7 +223,7 @@ func validateAdmissionReviewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Debug(data)
+	//log.Debug(data)
 
 	ar := v1beta1.AdmissionReview{}
 	if err := json.Unmarshal(data, &ar); err != nil {
