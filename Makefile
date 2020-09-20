@@ -13,7 +13,7 @@ image:
 	docker build -t kubenab .
 
 .PHONY: build
-build: export GOARCH=amd64
+build: export GOARCH=arm64
 build: export CGO_ENABLED=0
 build: export GO111MODULE=on
 build: export GOPROXY=https://gocenter.io
