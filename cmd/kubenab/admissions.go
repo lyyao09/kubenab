@@ -58,7 +58,7 @@ func mutateAdmissionReviewHandler(w http.ResponseWriter, r *http.Request) {
 	}))
 	defer promTimer.ObserveDuration()
 
-	log.Printf("Serving request: %s", r.URL.Path)
+	//log.Printf("Serving request: %s", r.URL.Path)
 	//set header
 	w.Header().Set("Content-Type", "application/json")
 
@@ -79,7 +79,7 @@ func mutateAdmissionReviewHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	namespace := ar.Request.Namespace
-	log.Printf("AdmissionReview Namespace is: %s", namespace)
+	//log.Printf("AdmissionReview Namespace is: %s", namespace)
 
 	admissionResponse := v1beta1.AdmissionResponse{Allowed: false}
 	patches := []patch{}
@@ -176,9 +176,9 @@ func mutateAdmissionReviewHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleContainer(container *v1.Container, dockerRegistryUrl string) bool {
-	log.Println("Container Image is", container.Image)
-
+	
 	if !containsRegisty(whitelistedRegistries, container.Image) {
+		log.Println("Container Image is", container.Image)
 		message := fmt.Sprintf("Image is not being pulled from Private Registry: %s", container.Image)
 		log.Printf(message)
 
@@ -197,9 +197,9 @@ func handleContainer(container *v1.Container, dockerRegistryUrl string) bool {
 
 		container.Image = newImage
 		return true
-	} else {
+	}/*else {
 		log.Printf("Image is being pulled from Private Registry: %s", container.Image)
-	}
+	}*/
 	return false
 }
 
@@ -212,7 +212,7 @@ func validateAdmissionReviewHandler(w http.ResponseWriter, r *http.Request) {
 	}))
 	defer promTimer.ObserveDuration()
 
-	log.Printf("Serving request: %s", r.URL.Path)
+	//log.Printf("Serving request: %s", r.URL.Path)
 	//set header
 	w.Header().Set("Content-Type", "application/json")
 
@@ -233,7 +233,7 @@ func validateAdmissionReviewHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	namespace := ar.Request.Namespace
-	log.Printf("AdmissionReview Namespace is: %s", namespace)
+	//log.Printf("AdmissionReview Namespace is: %s", namespace)
 
 	admissionResponse := v1beta1.AdmissionResponse{Allowed: false}
 	if !contains(whitelistedNamespaces, namespace) {
@@ -246,15 +246,14 @@ func validateAdmissionReviewHandler(w http.ResponseWriter, r *http.Request) {
 
 		// Handle containers
 		for _, container := range pod.Spec.Containers {
-			log.Println("Container Image is", container.Image)
-
 			if !containsRegisty(whitelistedRegistries, container.Image) {
+				log.Println("Container Image is", container.Image)
 				message := fmt.Sprintf("Image is not being pulled from Private Registry: %s", container.Image)
 				log.Printf(message)
 				admissionResponse.Result = getInvalidContainerResponse(message)
 				goto done
 			} else {
-				log.Printf("Image is being pulled from Private Registry: %s", container.Image)
+				//log.Printf("Image is being pulled from Private Registry: %s", container.Image)
 				admissionResponse.Allowed = true
 			}
 		}
@@ -269,7 +268,7 @@ func validateAdmissionReviewHandler(w http.ResponseWriter, r *http.Request) {
 				admissionResponse.Result = getInvalidContainerResponse(message)
 				goto done
 			} else {
-				log.Printf("Image is being pulled from Private Registry: %s", container.Image)
+				//log.Printf("Image is being pulled from Private Registry: %s", container.Image)
 				admissionResponse.Allowed = true
 			}
 		}
@@ -327,7 +326,7 @@ func containsRegisty(arr []string, str string) bool {
 
 // ping responds to the request with a plain-text "Ok" message.
 func healthCheck(w http.ResponseWriter, r *http.Request) {
-	log.Printf("Serving request: %s", r.URL.Path)
+	//log.Printf("Serving request: %s", r.URL.Path)
 	fmt.Fprintf(w, "Ok")
 }
 
